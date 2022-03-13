@@ -71,6 +71,59 @@ async function delAdminOrganisation() {
     }
 }
 
+async function addOperatorOrganisation() {
+    if (provider != undefined) {
+        signer = provider.getSigner();
+        var writeController = contractController.connect(signer);
+        var wallet =  $('#addOrgOperator').val();
+        try {
+            await writeController.addOperator(orgNumber, wallet);
+        } catch (addError) {
+            alert(addError.data.message);
+        }
+    } else {
+        alert('Not connected');
+    }
+}
+
+async function delOperatorOrganisation() {
+    if (provider != undefined) {
+        signer = provider.getSigner();
+        var writeController = contractController.connect(signer);
+        var wallet =  $('#delOrgOperator').val();
+        try {
+            await writeController.removeOperator(orgNumber, wallet);
+        } catch (addError) {
+            alert(addError.data.message);
+        }
+    } else {
+        alert('Not connected');
+    }
+}
+
+async function addUserInfo() {
+    if (provider != undefined) {
+        signer = provider.getSigner();
+        var writeController = contractController.connect(signer);
+        var id =  $('#addUserId').val();
+        var content =  $('#addUserInfo').val();
+        try {
+            await writeController.writeInfo(orgNumber, id, content);
+        } catch (addError) {
+            alert(addError.data.message);
+        }
+    } else {
+        alert('Not connected');
+    }
+}
+
+async function readUserInfo() {
+    var id =  $('#readUserId').val();
+    var info = await contractController.readInfo(orgNumber, id);
+    console.log("readUserInfo", info);
+    $('#readUserInfo').html(info);
+}
+
 async function fillTotalVariable() {
     const accounts = await ethereum.request({ method: 'eth_accounts' }).catch(checkErrEthAccounts());
 
@@ -215,6 +268,10 @@ function checkShowConnect() {
     console.log('checkShowConnect() isConnect = ', isConnect);
      if (isConnect && current_network === mainChainIdDec) {
          $('#connectButton').hide();
+         $('#orgData').hide();
+         $('#writeDoc').hide();
+         $('#readDoc').hide();
+
          startApp();
      } else {
          $('#connectButton').show();
@@ -246,6 +303,9 @@ function timeConverter(UNIX_timestamp){
 
 async function loadOrganisations(count) {
     //$('#currentOrg').hide();
+    $('#orgData').hide();
+    $('#writeDoc').hide();
+    $('#readDoc').hide();
 
     for(var i=1; i<count+1; i++) {
         var viewOrganisation = await contractController.viewOrganisation(i);
@@ -282,7 +342,25 @@ function initTableManager() {
 }
 
 async function selectOrg(number) {
+    $('#orgData').show();
+    $('#writeDoc').show();
+    $('#readDoc').show();
+
     orgNumber = number;
     var viewOrganisation = await contractController.viewOrganisation(number);
     $('#orgName').html(viewOrganisation._name);
+
+    var admins = viewOrganisation._admins;
+    var viewAdmins = "";
+    for(var i=0; i<admins.length; i++){
+        viewAdmins = viewAdmins + '"' + admins[i] + '"' + '\n'
+    }
+    $('#listOrgAdmin').val(viewAdmins);
+
+    var opers = viewOrganisation._operators;
+    var viewOpers = "";
+    for(var i=0; i<opers.length; i++){
+        viewOpers = viewOpers + '"' + opers[i] + '"' + '\n'
+    }
+    $('#listOrgOperators').val(viewOpers);
 }

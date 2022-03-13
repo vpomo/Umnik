@@ -64,9 +64,11 @@
                 <div class="card-body">
                     <h6 class="card-title">Данные по выбранной организации</h6>
                     <p class="text-bold">Название: <span id="orgName"></span></p>
-                    <div class="row">
+                    <div class="row" id="orgData">
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                            <p class="text-bold">Администраторы: <span id="orgAdmins"></span></p>
+                            <p class="text-bold">Список администраторов: <span id="orgAdmins"></span></p>
+                            <br>
+                            <p><textarea  id="listOrgAdmin" readonly rows="4" cols="50"></textarea></p>
                             <br>
                             <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal"
                                     data-target="#orgAddAdminModal">
@@ -78,7 +80,9 @@
                             </button>
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                            <p class="text-bold">Операторы: <span id="orgOpers"></span></p>
+                            <p class="text-bold">Список операторов: <span id="orgOpers"></span></p>
+                            <br>
+                            <p><textarea  id="listOrgOperators" readonly rows="4" cols="50"></textarea></p>
                             <br>
                             <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal"
                                     data-target="#orgAddOperModal">
@@ -99,10 +103,33 @@
 
     <br>
     <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12" id="writeDoc">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title">Список выданных документов</h6>
+                    <h6 class="card-title">Запись в блокчейн выданных документов</h6>
+                    <br>
+                    <label for="addUserId">Введите идентификатор пользователя:</label>
+                    <input type="number" class="form-control" id="addUserId" step="1">
+                    <br>
+                    <p>Введите закодированные данные о документе:</p>
+                    <p><textarea id="addUserInfo" rows="6" cols="100"></textarea></p>
+                    <br>
+                    <button type="button" class="btn btn-sm btn-primary" onclick="addUserInfo();">Записать</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12" id="readDoc">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Чтение данных из блокчейна</h6>
+                    <br>
+                    <label for="readUserId">Введите идентификатор пользователя:</label>
+                    <input type="number" class="form-control" id="readUserId" step="1">
+                    <br>
+                    <p>Вывод закодированных данных о документе:</p>
+                    <p><textarea id="readUserInfo" rows="6" cols="100" readonly></textarea></p>
+                    <br>
+                    <button type="button" class="btn btn-sm btn-primary" onclick="readUserInfo();">Прочитать</button>
                 </div>
             </div>
         </div>
@@ -186,6 +213,56 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-sm btn-primary" onclick="delAdminOrganisation();">Удалить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal add Operator organisation -->
+<div class="modal fade" id="orgAddOperModal" tabindex="-1" role="dialog" aria-labelledby="orgModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавление оператора в организацию</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="addOrgOperator">Введите адрес кошелька оператора организации:</label>
+                    <input type="text" class="form-control" id="addOrgOperator">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="addOperatorOrganisation();">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal remove Oper organisation -->
+<div class="modal fade" id="orgDelOperModal" tabindex="-1" role="dialog" aria-labelledby="orgModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удаление оператора из организации</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="delOrgOperator">Введите адрес кошелька оператора организации:</label>
+                    <input type="text" class="form-control" id="delOrgOperator">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="delOperatorOrganisation();">Удалить</button>
             </div>
         </div>
     </div>
