@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Админ-панель для записи данных в блокчейн</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/tableManager.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row header">
+
+        <div class="col-xl-12 align-items-center"><h1>Админка для записи данных в блокчейн</h1></div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 align-items-center">
+            <p class="text-bold">Адрес контракта: <br><span id="contractAddressLink"></span></p>
+            <br>
+            <p id="noweb3message" class="" style="background: #ff6347; display: none;">Пожалуйста,
+                подключите расширение для браузера Metamask и перезагрузите эту страницу!</p>
+        </div>
+
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+            <p class="text-bold">Адрес вашего кошелька: <span id="myAddress"></span></p>
+            <p class="text-bold">Баланс вашего кошелька: <span id="myBalance"></span> BNB</p>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Список созданных организаций</h6>
+                    <!-- Table start -->
+                    <table class="tablemanager">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>Name</th>
+                            <th class="disableFilterBy">Выбрать</th>
+                            <th class="disableFilterBy">Удалить</th>
+                        </tr>
+                        </thead>
+                        <tbody id="orgTableBody">
+                        </tbody>
+                    </table>
+                    <br>
+                    <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal"
+                            data-target="#orgModal">
+                        Новая организация
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Данные по выбранной организации</h6>
+                    <p class="text-bold">Название: <span id="orgName"></span></p>
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                            <p class="text-bold">Администраторы: <span id="orgAdmins"></span></p>
+                            <br>
+                            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal"
+                                    data-target="#orgAddAdminModal">
+                                Добавить
+                            </button>
+                            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal"
+                                    data-target="#orgDelAdminModal">
+                                Удалить
+                            </button>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                            <p class="text-bold">Операторы: <span id="orgOpers"></span></p>
+                            <br>
+                            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal"
+                                    data-target="#orgAddOperModal">
+                                Добавить
+                            </button>
+                            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal"
+                                    data-target="#orgDelOperModal">
+                                Удалить
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Список выданных документов</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+</div>
+
+<div class="bodycontract align-items-center">
+    <p> © 2021-2022 The Al'binoStudio </p>
+</div>
+
+
+<!-- Modal add organisation -->
+<div class="modal fade" id="orgModal" tabindex="-1" role="dialog" aria-labelledby="orgModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавление новой организации</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="addOrgName">Введите название организации:</label>
+                    <input type="text" class="form-control" id="addOrgName">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="addOrganisation();">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal add Admin organisation -->
+<div class="modal fade" id="orgAddAdminModal" tabindex="-1" role="dialog" aria-labelledby="orgModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавление админа в организацию</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="addOrgAdmin">Введите адрес кошелька админа организации:</label>
+                    <input type="text" class="form-control" id="addOrgAdmin">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="addAdminOrganisation();">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal remove Admin organisation -->
+<div class="modal fade" id="orgDelAdminModal" tabindex="-1" role="dialog" aria-labelledby="orgModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удаление админа из организации</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="delOrgAdmin">Введите адрес кошелька админа организации:</label>
+                    <input type="text" class="form-control" id="delOrgAdmin">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="delAdminOrganisation();">Удалить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
+        type="application/javascript"></script>
+<script src='./js/web3_script.js' type='text/javascript'></script>
+<script src='./js/tableManager.js' type='text/javascript'></script>
+
+</html>
+
