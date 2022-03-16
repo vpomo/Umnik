@@ -513,7 +513,7 @@ contract TrustedZone is Ownable {
     function viewOrganisation(uint256 orgNumber) external view
     returns(string memory _name, address[] memory _admins, address[] memory _operators, bool _active) {
 
-        Organisation storage org = organisation[orgNumber];
+        Organisation memory org = organisation[orgNumber];
         _name = org.name;
         _admins = org.admins.values();
         _operators = org.operators.values();
